@@ -75,7 +75,7 @@ public class Player_Inventory : MasterInventory_Class
     }
 
     [SerializeField]
-    Transform RespawnPoint;
+    public Transform RespawnPoint;
 
     //public bool tempRespawnToggle;
 

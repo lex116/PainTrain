@@ -68,7 +68,7 @@ public class MasterInventory_Class : MonoBehaviour
 
         healthScript = GetComponent<Health>();
 
-        for (int i = 0; i < MaximumNumberOfRangedWeapons; i++)
+        for (int i = RangedWeapons.Count; i < MaximumNumberOfRangedWeapons; i++)
         {
             RangedWeapons.Add(null);
         }

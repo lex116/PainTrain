@@ -155,6 +155,7 @@
     <Compile Include="Assets\Scripts\Weapons\Shark\Spear.cs" />
     <Compile Include="Assets\Scripts\Weapons\ThrowableAttacher.cs" />
     <Compile Include="Assets\Scripts\Weapons\Throwable_Class.cs" />
+    <Compile Include="Assets\SkillCoolDown.cs" />
     <Compile Include="Assets\Test_Movement.cs" />
     <Compile Include="Assets\_WayneExamples\NewBehaviourScript.cs" />
     <Compile Include="Assets\_WayneExamples\Scripts\AgentLinkMover.cs" />

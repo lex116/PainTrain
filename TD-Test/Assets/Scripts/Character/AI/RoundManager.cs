@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RoundManager : MonoBehaviour
 {
@@ -22,10 +23,7 @@ public class RoundManager : MonoBehaviour
 
     //temp
     [SerializeField]
-    Player_Inventory playerInvenP1;
-
-    [SerializeField]
-    Player_Inventory playerInvenP2;
+    Player_Inventory[] playerInvens;
 
     //[SerializeField]
     int OverlordsToSpawnCount = 1;
@@ -51,8 +49,6 @@ public class RoundManager : MonoBehaviour
         OverlordsSpawnedCount = 0;
         OverlordsDead = 0;
         SpawnedOverlords.Clear();
-
-
 
         if (Round == 1)
         {
@@ -93,7 +89,8 @@ public class RoundManager : MonoBehaviour
         //temp for demo
         if (Round == 6)
         {
-            Application.Quit();
+            //Application.Quit();
+            SceneManager.LoadScene(0);
         }
 
         StartCoroutine(SpawnOverlords());
@@ -152,16 +149,10 @@ public class RoundManager : MonoBehaviour
         if (OverlordsDead == OverlordsToSpawnCount)
         {
             //Debug.Log("Round Over");
-            if (playerInvenP1 != null)
+            foreach (Player_Inventory x in playerInvens)
             {
-                playerInvenP1.wincan.SetActive(true);
-                playerInvenP1.Respawn();
-            }
-
-            if (playerInvenP2 != null)
-            {
-                playerInvenP2.wincan.SetActive(true);
-                playerInvenP2.Respawn();
+                x.wincan.SetActive(true);
+                x.Respawn();
             }
 
             foreach (OverlordAI x in SpawnedOverlords)
@@ -178,17 +169,10 @@ public class RoundManager : MonoBehaviour
 
             yield return new WaitForSeconds(2.5f);
 
-            if (playerInvenP1 != null)
+            foreach (Player_Inventory x in playerInvens)
             {
-                playerInvenP1.wincan.SetActive(false);
-                playerInvenP1.losecan.SetActive(false);
-
-            }
-
-            if (playerInvenP2 != null)
-            {
-                playerInvenP2.wincan.SetActive(false);
-                playerInvenP2.losecan.SetActive(false);
+                x.wincan.SetActive(false);
+                x.losecan.SetActive(false);
             }
 
             yield return new WaitForSeconds(60f);
@@ -201,24 +185,6 @@ public class RoundManager : MonoBehaviour
             StartCoroutine(WaitingForEndOfRound());
         }
     }
-
-    //void FixedUpdate()
-    //{
-    //    if (PlayerEngineHealth.isDestroyed)
-    //    {
-    //        if (playerInvenP1 != null)
-    //        {
-    //            playerInvenP1.losecan.SetActive(true);
-    //            //playerInvenP1.Respawn();
-    //        }
-
-    //        if (playerInvenP2 != null)
-    //        {
-    //            playerInvenP2.losecan.SetActive(true);
-    //            //playerInvenP2.Respawn();
-    //        }
-    //    }
-    //}
 
     void SpawnCrates()
     {
