@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -38,9 +39,90 @@ public class RoundManager : MonoBehaviour
     [SerializeField]
     GameObject CratePrefab;
 
+    public bool TankSpawned;
+    public bool RifleSpawned;
+    public bool MedicSpawned;
+    public bool EngieSpawned;
+
+    [SerializeField]
+    Transform[] PlayerSpawns;
+
+    [SerializeField]
+    GameObject[] PlayerPrefabs;
+
+    [SerializeField]
+    GameObject[] PlayersInGame;
+
+    //[SerializeField]
+    //GameObject PlayerCharacters;
+
+    //public bool[] CharactersSelected = new bool[] { false, false, false, false };
+    //public bool[] CharactersSpawned = new bool[] { false, false, false, false };
+
     public void Start()
     {
+        SpawnPlayers();
         StartRound();
+
+    }
+
+    void SpawnPlayers()
+    {
+        foreach (Transform x in PlayerSpawns)
+        {
+            GameObject tempGO =
+                Instantiate(PlayerPrefabs[Array.IndexOf(PlayerSpawns, x)], 
+                x.transform.position, 
+                x.transform.rotation);
+
+            PlayersInGame[Array.IndexOf(PlayerSpawns, x)] = tempGO;
+
+            CustomCharController tempCCC = PlayersInGame[Array.IndexOf(PlayerSpawns, x)].GetComponent<CustomCharController>();
+
+            tempCCC.PlayerNumber = Convert.ToString(Array.IndexOf(PlayerSpawns, x) + 1);
+
+            Player_Inventory tempPI = PlayersInGame[Array.IndexOf(PlayerSpawns, x)].GetComponent<Player_Inventory>();
+
+            tempPI.RespawnPoint = x;
+        }
+        //This would be determined by the Character Selection in the final build
+        //for (int i = 0; i < CharactersSelected.Length; i++)
+        //{
+        //    CharactersSelected[i] = true;
+        //}
+
+        //for (int i = 0; i < CharactersSelected.Length; i++)
+        //{
+
+        //}
+    }
+
+    void RespawnPlayers()
+    {
+        for (int i = 0; i < PlayersInGame.Length; i++)
+        {
+            if (PlayersInGame[i] == null)
+            {
+                //Debug.Log("hit");
+                GameObject tempGO =
+                Instantiate(PlayerPrefabs[i],
+                PlayerSpawns[i].transform.position,
+                PlayerSpawns[i].transform.rotation);
+
+                PlayersInGame[i] = tempGO;
+
+                CustomCharController tempCCC = PlayersInGame[i].GetComponent<CustomCharController>();
+
+                tempCCC.PlayerNumber = Convert.ToString(i + 1);
+
+                Player_Inventory tempPI = PlayersInGame[i].GetComponent<Player_Inventory>();
+
+                tempPI.RespawnPoint = PlayerSpawns[i];
+
+                //temp for demo
+                tempPI.healthScript.HitPoints = 50;
+            }
+        }
     }
 
     void StartRound()
@@ -52,10 +134,12 @@ public class RoundManager : MonoBehaviour
 
         if (Round == 1)
         {
-            //timer = 60;
-            //chanceToSpawn = 35;
-            //OverlordsToSpawnCount = 1;
             SpawnCrates();
+        }
+
+        if (Round != 1)
+        {
+            RespawnPlayers();
         }
 
         if (Round == 2)
@@ -103,7 +187,7 @@ public class RoundManager : MonoBehaviour
             //demo
             //chanceToSpawn = 35; //+ (generation * 2);
             //chanceToSpawn = 150;
-            chanceToSpawnRoll = Random.Range(0, 100);
+            chanceToSpawnRoll = UnityEngine.Random.Range(0, 100);
 
             if (chanceToSpawnRoll < chanceToSpawn && OverlordsSpawnedCount < OverlordsToSpawnCount)
             {
@@ -149,11 +233,6 @@ public class RoundManager : MonoBehaviour
         if (OverlordsDead == OverlordsToSpawnCount)
         {
             //Debug.Log("Round Over");
-            foreach (Player_Inventory x in playerInvens)
-            {
-                x.wincan.SetActive(true);
-                x.Respawn();
-            }
 
             foreach (OverlordAI x in SpawnedOverlords)
             {
@@ -171,8 +250,10 @@ public class RoundManager : MonoBehaviour
 
             foreach (Player_Inventory x in playerInvens)
             {
-                x.wincan.SetActive(false);
-                x.losecan.SetActive(false);
+                if (x!=null)
+                {
+                    x.losecan.SetActive(false);
+                }
             }
 
             yield return new WaitForSeconds(60f);
@@ -190,12 +271,12 @@ public class RoundManager : MonoBehaviour
     {
         foreach (Transform x in crateSpawns)
         {
-            float CrateSpawnRoll = Random.Range(0, 100);
+            float CrateSpawnRoll = UnityEngine.Random.Range(0, 100);
             
             if (ChanceToSpawnCrates > CrateSpawnRoll)
             {
                 GameObject tempCrate = Instantiate(CratePrefab, x.position, x.rotation);
-                tempCrate.transform.Rotate( new Vector3 (0, Random.Range(0, 360), 0));
+                tempCrate.transform.Rotate( new Vector3 (0, UnityEngine.Random.Range(0, 360), 0));
             }
         }
     }

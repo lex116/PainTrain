@@ -14,7 +14,6 @@ public class Projectile_Class : MonoBehaviour
     public int ProjectileDamage = 1;
     [HideInInspector]
     public Rigidbody projectileRigidbody;
-    [HideInInspector]
     public Collider projectileCollider;
     [HideInInspector]
     public GameObject ObjectHit;
@@ -172,7 +171,7 @@ public class Projectile_Class : MonoBehaviour
                 }
                 else
                 {
-                    this.gameObject.layer = 14;
+                    this.gameObject.layer = 2;
                     projectileCollider.isTrigger = true;
                     projectileRigidbody.isKinematic = true;
                     AttachmentHandlerToTarget.AddAttachment
@@ -206,7 +205,8 @@ public class Projectile_Class : MonoBehaviour
             }
             else
             {
-                this.gameObject.layer = 14;
+
+                this.gameObject.layer = 2;
                 projectileCollider.isTrigger = true;
                 projectileRigidbody.isKinematic = true;
                 AttachmentHandlerToTarget.AddAttachment
@@ -216,6 +216,9 @@ public class Projectile_Class : MonoBehaviour
                 isAttachedDOT = true;
 
                 StartCoroutine(DamageOverTime(Ticks));
+
+                //Destroy(projectileRigidbody);
+                //Destroy(projectileCollider);
             }
         }
     }

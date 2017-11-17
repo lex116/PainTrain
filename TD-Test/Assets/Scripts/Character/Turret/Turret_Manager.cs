@@ -255,6 +255,8 @@ public class Turret_Manager : MonoBehaviour, IInteractable
 
             EquippedRangedWeapon = WeaponToTake;
             Debug.Log("Replaced old weapon");
+
+            EquippedRangedWeapon.TurnOffInteraction();
         }
     }
 

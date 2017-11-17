@@ -16,7 +16,6 @@ public class MassRail : Projectile_Class
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log(ProjectileDamage);
         ObjectHit = other.gameObject;
         ObjectToDamage = ObjectHit.GetComponent<IDamagable>();
         if (ObjectToDamage != null)

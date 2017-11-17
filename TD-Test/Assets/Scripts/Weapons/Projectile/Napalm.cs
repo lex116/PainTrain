@@ -37,6 +37,8 @@ public class Napalm : Projectile_Class
         GameObject fireClone =
             Instantiate(Clone, SpawnPos.transform.position, transform.rotation);
 
+        fireClone.layer = 11;
+
         Napalm fireCloneScript = fireClone.GetComponent<Napalm>();
         fireCloneScript.ProjectileDamage = ProjectileDamage;
         fireCloneScript.isDud = true;

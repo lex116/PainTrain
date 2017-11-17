@@ -72,16 +72,23 @@ public class Player_Inventory : MasterInventory_Class
         DropEverything();
         //LoseScreen();
         losecan.SetActive(true);
+        StartCoroutine(DeSpawn());
+    }
+
+    IEnumerator DeSpawn()
+    {
+        yield return new WaitForSeconds(2f);
+        Destroy(this.gameObject);
     }
 
     [SerializeField]
     public Transform RespawnPoint;
 
-    //public bool tempRespawnToggle;
-
+    //Dont need this anymore
     public void Respawn()
     {
         //tempRespawnToggle = false;
+        //healthScript.HitPoints = 10;
         healthScript.isDestroyed = false;
         healthScript.HitPoints = tempHealthForDemo;
         isBeingDestroyed = false;

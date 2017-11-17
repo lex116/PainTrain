@@ -62,6 +62,9 @@ public class CustomCharController : MonoBehaviour
     public float JumpCoolDownTimer = 1;
     public bool JumpCooledDown;
     #endregion
+
+    float GravForce = 2.5f;
+
     #region Setup Functions
     public void Setup()
     {
@@ -107,6 +110,7 @@ public class CustomCharController : MonoBehaviour
             Ability();
             //Fun
             TurnArmsOn();
+            CustomGravity();
         }
     }
     void GroundCheck()
@@ -299,6 +303,13 @@ public class CustomCharController : MonoBehaviour
         {
             Leftarm.SetActive(false);
             LeftArmWaiting = true;
+        }
+    }
+    void CustomGravity()
+    {
+        if (inAir)
+        {
+            rb.AddForce(transform.up * -1 * GravForce);
         }
     }
 }

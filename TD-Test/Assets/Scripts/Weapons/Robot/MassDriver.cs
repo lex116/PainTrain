@@ -5,22 +5,16 @@ using UnityEngine;
 
 public class MassDriver : RangedWeapon_Class
 {
-    float Charge;
-    float ChargeRate = 10;
+    public float Charge;
+    float ChargeRate = 0.75f;
     float RotationSpeed;
-    int damageModl = 75;
-    public bool refresh;
+    int damageModl = 80;
+    float resetSpeed = 5;
 
     public GameObject[] Spinners;
 
-    void Start()
+    void FixedUpdate()
     {
-        //StartCoroutine(ChargeUpRoutine());
-    }
-
-    IEnumerator ChargeUpRoutine()
-    {
-        refresh = true;
         if (currentWeaponState == State.Ready)
         {
             if (Charge < 100)
@@ -29,25 +23,12 @@ public class MassDriver : RangedWeapon_Class
             }
         }
 
-        refresh = false;
-        yield return new WaitForSeconds(0.5f);
-
-        StartCoroutine(ChargeUpRoutine());
-        refresh = false;
-    }
-
-    void FixedUpdate()
-    {
-        if (refresh == false)
-        {
-            StartCoroutine(ChargeUpRoutine());
-        }
-
         RotationSpeed = 2.5f * currentAmmo;
 
         foreach (GameObject x in Spinners)
         {
             int index = Array.IndexOf(Spinners, x) + 1;
+
             if (Charge > ((index * 10) + 10))
             {
                 x.transform.Rotate(0, 0, 1 * RotationSpeed);
@@ -61,9 +42,13 @@ public class MassDriver : RangedWeapon_Class
 
         DamageModifer = Mathf.RoundToInt(damageModl * (Charge / 100));
 
-        if (refresh == true)
+        if (currentWeaponState != State.Ready)
         {
-            refresh = false;
+            foreach (GameObject x in Spinners)
+            {
+                x.transform.localRotation =
+                    Quaternion.Slerp(x.transform.localRotation, Quaternion.Euler(0, 0, 0), resetSpeed * Time.deltaTime);
+            }
         }
     }
 
